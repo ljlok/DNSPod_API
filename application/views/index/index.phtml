@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>
-            Dnspod
+            Dnspod API
             </title>
             <meta name="viewport" content="width=device-width,initial-scale=1.0">
             <link href="../public/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -40,7 +40,7 @@
                   <div class="row-fluid">
                       <div class="span3"></div>
                           <div class="span3">
-                           <input type="button" class="btn btn-success" value="添加域名">
+                           <a href=""><input type="button" class="btn btn-success" value="添加域名"></a>
                             <div class="btn-group">
                                 <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                                    	 更多
@@ -61,12 +61,34 @@
                         </ul>
                       <!--Sidebar content-->
                     </div>
+                    <div class="span9" style="display:none">
+                      <table class="table table-condensed">
+                        <tr><td>
+                      <input type="text" name="domain_name">
+                    </td>
+                    <td><a href="/DNSPod/public/Domain/add"><input type="button" name="add_domain"></a></td>
+                    </tr>
+                      </table>
+                    </div>
                     <div class="span9">
                       <!--Body content-->
                       <table class="table table-condensed" >
-                          <tr><td colspan="3"><input type="checkbox"></td></tr>
-                          <tr><td><input type="checkbox"></td><td>mark</td><td>test</td></tr>
-                              <tr><td><input type="checkbox"></td><td>mark</td><td>test</td></tr>
+
+                          <tr><td><input type="checkbox"></td>
+                          	  <td>域名</td>
+                          	  <td>操作</td></tr>
+                          <?
+                          //var_dump($config);
+                          foreach($domain_list['domains'] as $key=>$item){ ?>
+                          
+                          <tr>
+                          	  <td><input type="checkbox"></td>
+                          	  <td><a href="#" ><?=$item?></a></td>
+                          	  <td><a href="#"><?echo "修改"?></a></td>
+                          	
+                          </tr>
+                          <? } ?>
+                         
                       </table>
                     </div>
                   </div>
@@ -75,4 +97,4 @@
                 <script src="http://code.jquery.com/jquery.js"></script>
                 <script src="../public/js/bootstrap.min.js"></script>
             </body>
-<
+</html>
