@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>
+            Dnspod API
+            </title>
+            <meta name="viewport" content="width=device-width,initial-scale=1.0">
+            <link href="http://libs.baidu.com/bootstrap/2.0.4/css/bootstrap.min.css" rel="stylesheet" media="screen">
+            </head>
+            <body>
+            
+               <div class="span12 well pricehover">
+              <div class="navbar">
+            <div class="navbar-inner">
+              <div class="container">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </a>
+              <a class="brand" href="#">DNSPod</a>
+              <div class="nav-collapse">
+                  <ul class="nav nav-pills">
+                    <li class="active"><a href="/DNSPod/public/Index/">Home</a></li>
+                    <li><a href="#">D监控</a></li>
+                    <li><a href="#">购买套餐</a></li>
+                    <li><a href="#">About</a></li>
+                  </ul>
+                <form class="navbar-search pull-left" action="">
+                  <input type="text" class="search-query span2" placeholder="Search">
+                </form>
+                  </div>
+                  </div>
+                  </div>
+                  </div>
+                
+                <br />
+                <div class="container-fluid">
+                  <div class="row-fluid">
+                     <div class="span3">
+                        <ul class="nav nav-pills nav-stacked">
+                            <li><a href="">全部域名</a></li>
+                            <li><a href="">最新域名</a></li>
+                            <li><a href="">错误域名</a></li>
+                        </ul>
+                      <!--Sidebar content-->
+                    </div>
+                    
+                          <div class="span1">
+                           <a href="#"><input type="button" class="btn btn-success" value="添加记录" onclick="show_add_record_panel()"></a>
+                            
+                          </div> 
+
+                          <div class="span1">
+                            <div class="btn-group">
+                                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                                     更多
+                                    <span class="caret"></span>
+                                 </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/DNSPod/public/Domain/remove">删除</a></li>
+                                    <li><a href="#">停用</a></li>
+                                </ul>
+                            </div>
+                          </div>
+
+                          <div class="span8"></div>
+                   
+
+                    <!-- end-->
+                    <div class="span9">
+
+                      <i class="icon-home"></i><strong> >> <?=$record_list['domain']->name?></strong>
+                    </div>
+
+                <div id="add_record_panel" style="display:none">
+                       <form method="post" action="/DNSPod/public/Record/add">
+                        
+                        <div class="span1">
+                          <input type="text" class="input-small" name="record_name" placeholder="记录">
+                          <input type="hidden" name="domain_id" value="<?=$record_list['domain']->id?>">
+                        </div>
+                              <div class="span1"><select name="record_type">
+                                    <option>A</option>
+                                    <option>CNAME</option>
+                                    <option>MX</option>
+                                    <option>TXT</option>
+                                    <option>NS</option>
+                                    <option>AAAA</option>
+                                    <option>SRV</option>
+                                    <option>显性URL</option>
+                                    <option>隐性URL</option>
+                                  </select>
+                                </div>
+                                  <div class="span1">
+                              <select name="record_line">
+                                  <option>默认</option>
+                                  <option>电信</option>
+                                  <option>联通</option>
+                                  <option>教育网</option>
+                                  <option>百度</option>
+                                  </select>
+                                  </div>
+                            <div class="span1">
+                              <input type="text" name="record_value" class="input-small" maxlength="10" placeholder="记录值"></div>
+                            <div class="span1">
+                              <input type="text" name="record_mx" class="input-small" maxlength="5" placeholder="MX"></div>
+                            <div class="span2">
+                              <input type="text" name="record_ttl" class="input-small" maxlength="5" placeholder="TTL"></div>
+                            <div class="span2">
+                              <input type="submit" class="btn btn-info" value="保存"　/>
+                             
+                              <input type="button" class="btn btn-default" onclick="cancle_add_record_panel()" value="取消">
+                            </div>
+                          </form>
+                        </div>
+                          <!-- add record panel -->
+    
+
+<div class="span3"></div>
+
+                    <div class="span8">
+                      <!--Body content-->
+                     
+                      <div class="record-header">
+                      <table class="table table-condensed" >
+                          <tr><td width="5%"><input type="checkbox"> </td>
+                              <td width="12%">主机记录</td>
+                              <td width="14%">记录类型</td>
+                              <td width="24%">记录值</td>
+                              <td width="16%">MX优先级</td>
+                              <td width="12%">TTL</td>
+                              <td>操作</td>
+                            </tr>       
+
+                      </table>
+                      </div>
+                      <div id="main-content">
+                       
+                        <table>
+                         
+                          <? foreach($record_list['records'] as $key=>$item){ ?>
+                          <tr>
+                              <td width="5%"> <input type="checkbox" value="<?=$item->id?>"></td>
+                              <td width="18%">
+                                  <?=$item->name?>
+                                  <?//var_dump($record_list)?>
+                              </td>
+                              <td width="14%">
+                                  <?=$item->type?>
+                              </td >
+                              <td width="28%">
+                                  <?=$item->value?>
+                              </td>
+                               <td width="12%">
+                                  <?=$item->mx?>
+                              </td>
+                              <td width="9%">
+                                  <?=$item->ttl?>
+                              </td>
+                              <td>
+                               <a href="/DNSPod/public/Record/remove?domain_id=<?=$record_list['domain']->id?>&record_id=<?=$item->id?>">
+                                <input type="button" class="btn btn-mini btn-danger" value="删除"></a>
+                               
+                              <? //var_dump($item->status);?>
+                                <? if($item->status=="enabled"){ ?>
+                                <a href="/DNSPod/public/Record/update?domain_id=<?=$record_list['domain']->id?>&record_id=<?=$item->id?>&status=disable"><input type="button" class="btn btn-mini  btn-default" value="暂停"></a>
+                                <? }else{ ?>
+                                <a href="/DNSPod/public/Record/update?domain_id=<?=$record_list['domain']->id?>&record_id=<?=$item->id?>&status=enable"><input type="button" class="btn btn-mini  btn-info" value="启用"></a>
+                                <? } ?>
+                                
+                                <input type="button" class="btn btn-mini btn-default" onclick="show_modify_record_panel(<?=$item->id?>)" value="修改">
+                              </td>
+                          </tr>
+                          <? } ?>
+                       
+                      </table>
+                      </div>
+
+                    </div>
+          <div class="span3"></div>
+          <div id="modify_record_panel" style="display:none">
+                       <form method="post" action="/DNSPod/public/Record/modify">
+                        
+                        <div class="span1">
+                          <input type="text" class="input-small" name="record_name" placeholder="记录">
+                          <input type="hidden" name="domain_id" value="<?=$record_list['domain']->id?>">
+                           <input type="hidden" name="record_id" id="record_id">
+
+                        </div>
+                              <div class="span1"><select name="record_type">
+                                    <option value="A">A</option>
+                                    <option value="CNAME">CNAME</option>
+                                    <option value="MX">MX</option>
+                                    <option value="TXT">TXT</option>
+                                    <option value="NS">NS</option>
+                                    <option value="AAAA">AAAA</option>
+                                    <option value="SRV">SRV</option>
+                                    <option value="显性URL">显性URL</option>
+                                    <option value="隐性URL">隐性URL</option>
+                                  </select>
+                                </div>
+                                  <div class="span1">
+                              <select name="record_line">
+                                  <option value="默认">默认</option>
+                                  <option value="电信">电信</option>
+                                  <option value="联通">联通</option>
+                                  <option value="教育网">教育网</option>
+                                  <option value="百度">百度</option>
+                                  </select>
+                                  </div>
+                            <div class="span1">
+                              <input type="text" name="record_value" class="input-small" maxlength="10" placeholder="记录值"></div>
+                            <div class="span1">
+                              <input type="text" name="record_mx" class="input-small" maxlength="5" placeholder="MX"></div>
+                            <div class="span2">
+                              <input type="text" name="record_ttl" class="input-small" maxlength="5" placeholder="TTL"></div>
+                            <div class="span2">
+                              <input type="submit" class="btn btn-info" value="保存"　/>
+                             
+                              <input type="button" class="btn btn-default" onclick="cancle_modify_record_panel()" value="取消">
+                            </div>
+                          </form>
+                        </div>
+
+
+
+                  </div>  
+                </div>
+</div>
+                <script src="http://code.jquery.com/jquery.js"></script>
+                <script src="http://libs.baidu.com/bootstrap/2.0.4/js/bootstrap.min.js"></script>
+                <script>
+                  function show_add_record_panel(){
+                    //var main_content = document.getElementById("main-content");
+                    document.getElementById("add_record_panel").style.display = "block";
+                  }
+                  function cancle_add_record_panel(){
+                    document.getElementById("add_record_panel").style.display = "none";
+
+                  }
+
+                  function show_modify_record_panel(record_id){
+                    document.getElementById("modify_record_panel").style.display = "block";
+                    document.getElementById("record_id").value = record_id;
+                  }
+
+                  function cancle_modify_record_panel(){
+                    document.getElementById("modify_record_panel").style.display = "none";
+
+                  }
+
+                </script>
+            </body>
+</html>

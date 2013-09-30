@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>
+            Dnspod API
+            </title>
+            <meta name="viewport" content="width=device-width,initial-scale=1.0">
+            <link href="http://libs.baidu.com/bootstrap/2.0.4/css/bootstrap.min.css" rel="stylesheet" media="screen">
+            </head>
+            <body>
+            
+               <div class="span12 well pricehover">
+              <div class="navbar">
+            <div class="navbar-inner">
+              <div class="container">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </a>
+              <a class="brand" href="#">DNSPod</a>
+              <div class="nav-collapse">
+                  <ul class="nav nav-pills">
+                    <li class="active"><a href="/DNSPod/public/Index/">Home</a></li>
+                    <li><a href="#">D监控</a></li>
+                    <li><a href="#">购买套餐</a></li>
+                    <li><a href="#">About</a></li>
+                  </ul>
+                <form class="navbar-search pull-left" action="">
+                  <input type="text" class="search-query span2" placeholder="Search">
+                </form>
+                  </div>
+                  </div>
+                  </div>
+                  </div>
+                
+                <br />
+                <div class="container-fluid">
+                  <div class="row-fluid">
+                     <div class="span3">
+                        <ul class="nav nav-pills nav-stacked">
+                            <li><a href="">全部域名</a></li>
+                            <li><a href="">最新域名</a></li>
+                            <li><a href="">错误域名</a></li>
+                        </ul>
+                      <!--Sidebar content-->
+                    </div>
+                    
+                          <div class="span1">
+                           <a href="#"><input type="button" class="btn btn-success" value="添加记录" onclick="show_add_record_panel()"></a>
+                            
+                          </div>
+
+                          <div class="span1">
+                            <div class="btn-group">
+                                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                                     更多
+                                    <span class="caret"></span>
+                                 </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/DNSPod/public/Domain/remove">删除</a></li>
+                                    <li><a href="#">停用</a></li>
+                                </ul>
+                            </div>
+                          </div>
+
+                          <div class="span8"></div>
+                   
+
+                    <!--add domain panel start hidden-->
+                    <div id="add_record_panel" class="span8" style="display:none">
+                      <br />
+                      <form method="post" action="/DNSPod/public/Record/add">
+                        <div class="span4">
+                          <input type="text" name="domain_name" placeholder="input here...">
+                        </div>
+                        <div class="span1"></div>
+                        <div class="span3">
+                          <input type="submit" class="btn btn-success" value="添加">
+                          <input type="button" class="btn btn-default" name="cancle_domain" onclick="cancle_add_record_panel()" value="取消">
+                      </div>
+                      </form>
+                    </div>
+                    <!-- end-->
+
+                    <div class="span8">
+                      <!--Body content-->
+                      <div class="record-header">
+                      <table class="table table-condensed" >
+
+                          <tr><th width="5%"><input type="checkbox"></td>
+                              <td width="20%">主机记录</td>
+                              <td width="15%">记录类型</td>
+                              <td width="10%">记录值</td>
+                              <td width="15%">MX优先级</td>
+                              <td>TTL</td>
+                              <td>操作</td>
+                            </tr>       
+                      </table>
+                      </div>
+                      <div class="main-content">
+                        <table>
+                          <tr>
+                              <td width="5%"><input type="checkbox" value="<?=$domain->id?>"></td>
+                              <td width="22%">
+                                  <?=$domain->name?>
+                              </td>
+                              <td width="15%">
+                                  <?=$domain->grade_title?>
+                              </td >
+                              <td width="15%">
+                                  <?=$domain->ttl?>
+                              </td>
+                               <td width="15%">
+                                  <?=$domain->ttl?>
+                              </td>
+                              <td width="10%">
+                                  <?=$domain->ttl?>
+                              </td>
+                              <td>
+                               <a href="/DNSPod/public/Domain/remove?domain_id=<?=$domain->id?>">
+                                <input type="button" class="btn btn-danger" value="删除"></a>
+                               
+                              
+                                <? if($domain->status=="enable"){ ?>
+                                <a href="/DNSPod/public/Domain/update?domain_id=<?=$domain->id?>&status=disable"><input type="button" class="btn btn-default" value="暂停"></a>
+                                <? }else{ ?>
+                                <a href="/DNSPod/public/Domain/update?domain_id=<?=$domain->id?>&status=enable"><input type="button" class="btn btn-info" value="启用"></a>
+                                <? } ?>
+                              </td>
+                          </tr>
+                         
+                      </table>
+                      </div>
+                    </div>
+                  </div>  
+                </div>
+</div>
+                <script src="http://code.jquery.com/jquery.js"></script>
+                <script src="http://libs.baidu.com/bootstrap/2.0.4/js/bootstrap.min.js"></script>
+                <script>
+                  function show_add_record_panel(){
+                    document.getElementById("add_record_panel").style.display = "block";
+                  }
+                  function cancle_add_record_panel(){
+                    document.getElementById("add_record_panel").style.display = "none";
+
+                  }
+
+                </script>
+            </body>
+</html>
