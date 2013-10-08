@@ -51,7 +51,7 @@
                            <a href="#"><input type="button" class="btn btn-success" value="添加域名" onclick="show_add_domain_panel()"></a>
                             
                           </div>
-
+                          
                           <div class="span1">
                             <div class="btn-group">
                                 <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -64,8 +64,28 @@
                                 </ul>
                             </div>
                           </div>
+                          
+                          <div class="span5">
 
-                          <div class="span8"></div>
+                            <form method="post" action="/DNSPod/public/Domain/import" enctype="multipart/form-data" onsubmit="return check_import_file()">
+                              <table>
+                              <tr><td>
+                                <input type="file" name="import_domain" id="import_domain" size="50">
+                              </td>
+                              <td>
+                                <input type="submit" class="btn btn-default" onclick="" value="导入域名">
+                              </td>
+                              <td>
+                                <a href="/DNSPod/public/Domain/export">
+                                <input type="button" class="btn btn-default" onclick="" value="导出域名">
+                                </a>
+                              </td>
+                          </tr>
+                             </table>
+                            </form>
+                          </div>
+
+                          <div class="span2"></div>
                    
 
                     <!--add domain panel start hidden-->
@@ -130,6 +150,15 @@
                   }
                   function cancle_add_domain_panel(){
                     document.getElementById("add_domain_panel").style.display = "none";
+
+                  }
+                  function check_import_file(){
+  
+                    var uf = document.getElementById("import_domain"); 
+                      if(uf.value==null || uf.value == ""){ 
+                          alert("请上传导入文件");
+                          return false;
+                          }
 
                   }
 

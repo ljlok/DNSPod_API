@@ -79,6 +79,63 @@ class DomainController extends Yaf_Controller_Abstract {
        	}
 
 	}
+
+	public function importAction(){//import domain action
+
+		$upload_dir = APP_PATH."/uploadfile/";          
+  		$_FILES['import_domain']['name'] = "domains";
+  
+  		$uploadfile = $upload_dir.basename($_FILES['import_domain']['name']);
+  		if(move_uploaded_file($_FILES['import_domain']['tmp_name'],$uploadfile)){
+  			$file_info = file($uploadfile);
+  			foreach ($file_info as $key => $value) {
+  				$params = init_params('domain_add',$value);
+       		 	$arr = process_API_info(
+       					get_API_info($params['api'],$params['post']),
+       					'domain_add'
+       				 );
+       		 	if($arr['status']->code!=1){
+       		 		$this->getView()->assign("err_msg","line".($key+1)."->".$value." ".$arr['status']->message);
+       		 	}
+  			}
+
+  			//$this->redirect("/DNSPod/public/Index/");
+  		}else{
+			$this->getView()->assign("err_msg","error!");
+		}
+	}
+
+	public function exportAction(){
+		 Yaf_Dispatcher::getInstance()->disableView();
+		 
+		 $params = init_params('domain_list');
+       	 $arr = process_API_info(
+       					get_API_info($params['api'],$params['post']),
+       					'domain_list'
+       				 );
+       	 $file = APP_PATH."/downloadfile/domains";
+       	 $handle = fopen($file , "w");
+       	 foreach ($arr['domains'] as $key => $item) {
+       	 	fwrite($handle, $item->name."\r\n");
+       	 }
+       	 fclose($handle);
+
+        header("Content-type: application/octet-stream");
+
+        $ua = $_SERVER['HTTP_USER_AGENT'];
+        $file_name = "domains";
+        $encoded_filename = rawurlencode($file_name);
+        if(preg_match("/MSIE/",$ua)){
+            header('Content-Dispositon: attachment; filename="'. $encoded_filename. '"'); 
+        }else if(preg_match("/Firefox/",$ua)){
+            header("Content-Disposition: attachment; filename*=\"utf8''" . $file_name . '"'); 
+        }else{
+            header('Content-Disposition: attachement; filename="' . $file_name . '"'); 
+        
+       }
+       readfile($file);
+
+	}
 	//check domain 
 	public function check_domain($domain_name){
 		if($domain_name==""){
